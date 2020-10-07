@@ -54,3 +54,10 @@ playAgain.addEventListener('click',(e) => {
 
 
 
+// This loop has all the box and added in eventListener to work
+//like a button and change the sing on each box
+allBox.forEach(boxButton =>{
+    boxButton.addEventListener('click', (e) =>{
+        boxButton.innerHTML='&#x2715;';
+    })
+})
