@@ -40,10 +40,24 @@ footer{
 #boxes{
     display:flex;
     flex-wrap: wrap;
+    font-size: 600%;
+    color:#FFFFFF;
+
     
 }
 .sq{
     width:100px;
     height:100px;
     border:1.5px solid black;
+}
+
+.users{
+   display:flex;
+   flex-direction: column;
+}
+#users div {
+     font-size: 25px;
+}
+select{
+    font-size: 20px;
 }
