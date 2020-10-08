@@ -8,21 +8,12 @@ class TicTacToe{
         this.numberOfClick=0;
         this.scoreA=0;
         this.scoreB=0;
+        this.scoreT=0;
         //This will help to control for not clicking the button more than one
         this.check=[];
         this.addAClick=[];
         this.addBClick=[];
-        
-        this.winningConditions = [
-            [0,1,2],
-            [3,4,5],
-            [6,7,8],
-            [0,3,6],
-            [1,4,7],
-            [2,5,8],
-            [0,4,8],
-            [2,4,6]
-        ];
+        this.winningConditions = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
     }
     playerTurn(){
         if(this.numberOfClick%2==0){
@@ -75,14 +66,18 @@ class TicTacToe{
       for(let i=0; i<this.winningConditions.length; i++){
         let ep=this.winningConditions[i];
          if(this.addAClick.includes(ep[0]) && this.addAClick.includes(ep[1]) && this.addAClick.includes(ep[2])){
+    
+
             this.scoreA+=1;
-            console.log("WINNER A");
-            this.settingPlayerTurnBoxValue("X WINNER!",'#008000')
+            this.settingPlayerTurnBoxValue("X WINNER!",'#008000');
             scoreAField.textContent=' '+this.scoreA;
+            //This will play the sound for winner
             winner.play();
+            //This method will disable to button from clicking when we will find the winner
             this.stopTheGameWhenWeFoundWinner();
          }
          if(this.addBClick.includes(ep[0]) && this.addBClick.includes(ep[1]) && this.addBClick.includes(ep[2])){
+             console.log("trying to get the value");
             this.scoreB+=1;
             console.log("WINNER B");
             this.settingPlayerTurnBoxValue("O WINNER!!",'#008000')
@@ -92,9 +87,11 @@ class TicTacToe{
         }
       }
         if(this.check.length===9){
+            this.scoreT+=1;
             console.log("The Game is Draw");
             draw.play();
             this.settingPlayerTurnBoxValue("XO DRAW",'#FF0000')
+            socreTieField.textContent=' '+this.scoreT;
 
         }
     }
@@ -107,6 +104,7 @@ class TicTacToe{
     restartTheGame(){
         this.scoreA=0;
         this.scoreB=0;
+        this.scoreT=0;
         scoreAField.innerHTML=0;
         scoreBField.innerHTML=0;
         this.playTheGameAgain();
@@ -124,7 +122,6 @@ class TicTacToe{
 
 }
 
-const allParts=[1,2,3,4,5,6,7,8,9]
 //Find all the Button elements from UI
 const startBtn = document.querySelector("#startBtn")
 const playAgain = document.querySelector("#playAgain")
@@ -133,6 +130,7 @@ const playAgain = document.querySelector("#playAgain")
 //Find all score elements from UI
 let scoreAField=document.querySelector('.score1');
 let scoreBField=document.querySelector('.score2');
+let socreTieField=document.querySelector('.score3');
 
 
 //Find all the box to use as button
@@ -157,7 +155,6 @@ startBtn.addEventListener('click',(e) => {
    ticTacToe.restartTheGame(); 
 });
 
-
 //This button will update the socre with the previous score and
 //clear the board
 playAgain.addEventListener('click',(e) => {
@@ -165,15 +162,6 @@ playAgain.addEventListener('click',(e) => {
 });
 
 
-
-//On change the value from the user selection we want to set the user 
-//value either x or o
-firstUser.addEventListener('change', (e) =>{
-
-      console.log(firstUser.value);
-      console.log(secondUser.value);
-      
-});
 
 //calling the TicTacToe class to setup users
 const ticTacToe= new TicTacToe("x","y");
