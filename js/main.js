@@ -45,12 +45,12 @@ class TicTacToe{
                         this.addBClick.push(index);
                         //This following code is for O sign
                         boxButton.innerHTML='&#79;';
-                        this.settingPlayerTurnBoxValue("Now A's Turn",'#000000')
+                        this.settingPlayerTurnBoxValue("X Turn",'#000000')
                     }else{
                         this.addAClick.push(index);
                        //This following code is for  ✕ sing
                         boxButton.innerHTML='&#x2715;';
-                        this.settingPlayerTurnBoxValue("Now B's Turn",'#0602f5');
+                        this.settingPlayerTurnBoxValue("O Turn",'#0602f5');
                     }
                     this.numberOfClick++;
                     //console.log(this.addAClick, this.addBClick);
@@ -77,21 +77,21 @@ class TicTacToe{
          if(this.addAClick.includes(ep[0]) && this.addAClick.includes(ep[1]) && this.addAClick.includes(ep[2])){
             this.scoreA+=1;
             console.log("WINNER A");
-            this.settingPlayerTurnBoxValue("A WON THE GAME",'#008000')
+            this.settingPlayerTurnBoxValue("X WINNER!",'#008000')
             scoreAField.textContent=' '+this.scoreA;
             this.stopTheGameWhenWeFoundWinner();
          }
          if(this.addBClick.includes(ep[0]) && this.addBClick.includes(ep[1]) && this.addBClick.includes(ep[2])){
             this.scoreB+=1;
             console.log("WINNER B");
-            this.settingPlayerTurnBoxValue("B WON THE GAME",'#008000')
+            this.settingPlayerTurnBoxValue("O WINNER!!",'#008000')
             scoreBField.textContent=' '+this.scoreB;
             this.stopTheGameWhenWeFoundWinner();
         }
       }
         if(this.check.length===9){
             console.log("The Game is Draw");
-            this.settingPlayerTurnBoxValue("GAME OVER",'#FF0000')
+            this.settingPlayerTurnBoxValue("XO DRAW",'#FF0000')
 
         }
     }
