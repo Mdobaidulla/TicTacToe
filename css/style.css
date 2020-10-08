@@ -61,3 +61,19 @@ footer{
 select{
     font-size: 20px;
 }
+#currentPlayer{
+    background:#000000;
+    color:#FFFFFF;
+    padding:8px;
+
+}
+.user1{
+    background:#000000;
+    color:#FFFFFF;
+    padding:8px;
+}
+.user2{
+    background:#0602f5;
+    color:#ffffff;
+    padding:8px;
+}
