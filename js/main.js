@@ -136,8 +136,7 @@ startBtn.addEventListener('click',(e) => {
 //This button will update the socre with the previous score and
 //clear the board
 playAgain.addEventListener('click',(e) => {
-    console.log(startBtn);
-    console.log(playAgain);
+
 });
 
 
@@ -155,4 +154,5 @@ firstUser.addEventListener('change', (e) =>{
 const ticTacToe= new TicTacToe("x","y");
 ticTacToe.controlButton();
 // ticTacToe.findTheWinner();
+
 
