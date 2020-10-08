@@ -79,6 +79,7 @@ class TicTacToe{
             console.log("WINNER A");
             this.settingPlayerTurnBoxValue("X WINNER!",'#008000')
             scoreAField.textContent=' '+this.scoreA;
+            winner.play();
             this.stopTheGameWhenWeFoundWinner();
          }
          if(this.addBClick.includes(ep[0]) && this.addBClick.includes(ep[1]) && this.addBClick.includes(ep[2])){
@@ -86,11 +87,13 @@ class TicTacToe{
             console.log("WINNER B");
             this.settingPlayerTurnBoxValue("O WINNER!!",'#008000')
             scoreBField.textContent=' '+this.scoreB;
+            winner.play();
             this.stopTheGameWhenWeFoundWinner();
         }
       }
         if(this.check.length===9){
             console.log("The Game is Draw");
+            draw.play();
             this.settingPlayerTurnBoxValue("XO DRAW",'#FF0000')
 
         }
@@ -141,6 +144,13 @@ const secondUser = document.querySelector('#selectUser2');
 
 //Find the element to set the value whos turn is now
 const whosTurn=document.querySelector('#currentPlayer');
+
+
+//Audio palying from this element
+let winner = document.querySelector("#myWinner");
+let draw = document.querySelector("#myDraw");
+
+
 //Added this button to start the game, this will set the starting score
 //as zero for both user
 startBtn.addEventListener('click',(e) => {
