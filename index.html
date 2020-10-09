@@ -12,6 +12,16 @@
     </header>
     <section>
         <br><br>
+        <div>       
+             <select id="playerSelection">
+                <option value="">To Start Select Player</option>
+                <option value="me">Play With Me</option>
+                <option value="ai">Play With AI</option>
+            </select>
+            <br><br>
+        </div>
+
+
         <div id="users">
                 <div id="user1">
                     A: 
@@ -59,7 +69,7 @@
         <br><br> 
         <div id="controlBnt">
             <button id="playAgain">Play Again</button>
-            <button id="startBtn">Start </button>
+            <button id="startBtn">Reset </button>
           </div>
         <br><br>
     </section>
@@ -68,6 +78,9 @@
     </audio>
     <audio id="myDraw">
         <source src="./audio/draw.wav" type="audio/mpeg">
+    </audio>
+    <audio id="myClick">
+        <source src="./audio/click.wav" type="audio/mpeg">
     </audio>
     <footer>
         My Page footer will be here

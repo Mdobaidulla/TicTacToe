@@ -1,7 +1,7 @@
 console.log("It is working");
 
-//Creating a global variable to cound the click and change the user;
-//let numberOfClick=0;
+
+
 class TicTacToe{
     constructor(){
         this.userA='x';
@@ -25,45 +25,54 @@ class TicTacToe{
     }
     //This function will control all the click in the box,
     //Changing the value on each box
-    controlButton(){
-        allBox.forEach((boxButton, index) =>{
-            boxButton.addEventListener('click', (e) =>{
-                //adding this condision for disable the button after clicking one
-                if(this.check.includes(index)){
+    controlButton(players){
+        if(players=='me'){
+            this.playGame();
+        }else{
+                console.log("AI will play here");
+        }
+  }
+
+  playGame(){
+    allBox.forEach((boxButton, index) =>{
+        boxButton.addEventListener('click', (e) =>{
+            //adding this condision for disable the button after clicking one
+            if(this.check.includes(index)){
+            }else{
+                this.check.push(index);
+                //This condision is used to change the player who will click on it
+                if(ticTacToe.playerTurn()){
+                    this.addBClick.push(index);
+                    //This following code is for O sign
+                if(this.userA=='x'){
+                    boxButton.innerHTML='&#79;';
+                    boxButton.style.color='#B8B8B8';
                 }else{
-                    this.check.push(index);
-                    //This condision is used to change the player who will click on it
-                    if(ticTacToe.playerTurn()){
-                        this.addBClick.push(index);
-                        //This following code is for O sign
-                      if(this.userA=='x'){
+                    boxButton.innerHTML='&#x2715;';
+                    boxButton.style.color='#FFFFFF';
+                }
+                    this.settingPlayerTurnBoxValue("A Turn",'#000000')
+                }else{
+                    if(this.userA=='o'){
                         boxButton.innerHTML='&#79;';
                         boxButton.style.color='#B8B8B8';
-                      }else{
+                    }else{
                         boxButton.innerHTML='&#x2715;';
                         boxButton.style.color='#FFFFFF';
-                      }
-                        this.settingPlayerTurnBoxValue("A Turn",'#000000')
-                    }else{
-                        if(this.userA=='o'){
-                            boxButton.innerHTML='&#79;';
-                            boxButton.style.color='#B8B8B8';
-                          }else{
-                            boxButton.innerHTML='&#x2715;';
-                            boxButton.style.color='#FFFFFF';
-                          }
-                        this.addAClick.push(index);
-                        //This will change the display
-                        this.settingPlayerTurnBoxValue("B Turn",'#0602f5');
                     }
-                    this.numberOfClick++;
-                   this.findTheWinner(); 
+                    this.addAClick.push(index);
+                    //This will change the display
+                    this.settingPlayerTurnBoxValue("B Turn",'#827b79');
                 }
-            })
-            
+                this.numberOfClick++;
+            this.findTheWinner(); 
+            clickSound.play();
+            }
         })
-         
-    }//Set different backgroun when user Turn change
+        
+    })
+  }
+    //Set different backgroun when user Turn change
     settingPlayerTurnBoxValue(textValue,color){
         whosTurn.innerHTML=textValue;
         whosTurn.style.background=color;
@@ -126,6 +135,7 @@ class TicTacToe{
         this.scoreT=0;
         scoreAField.innerHTML=0;
         scoreBField.innerHTML=0;
+        playerSelection.selectedIndex=0;
         this.playTheGameAgain();
     }
     playTheGameAgain(){
@@ -139,6 +149,10 @@ class TicTacToe{
             box.innerHTML='';
             box.style.background='#028779';
         })
+    }
+    aiPlayer(){
+        Math.floor((Math.random() * 10) + 1);
+
     }
 
 
@@ -167,6 +181,35 @@ const whosTurn=document.querySelector('#currentPlayer');
 //Audio palying from this element
 let winner = document.querySelector("#myWinner");
 let draw = document.querySelector("#myDraw");
+let clickSound = document.querySelector("#myClick");
+console.log(clickSound);
+
+
+
+
+
+
+
+
+
+
+//Find the player to start playing
+const playerSelection = document.querySelector('#playerSelection');
+
+playerSelection.addEventListener('change',(e) =>{
+    if(playerSelection.value=='me'){
+        console.log("selected me");
+        ticTacToe.controlButton("me");
+    }else{
+        ticTacToe.controlButton("ai");
+        console.log("selected ai");
+    }
+
+})
+
+
+
+
 
 
 //Added this button to start the game, this will set the starting score
@@ -187,6 +230,7 @@ playAgain.addEventListener('click',(e) => {
 const firstUser = document.querySelector('#selectUser1');
 const secondUser = document.querySelector('#selectUser2');
 
+//This button will setup A user's ball, either x or 0
 firstUser.addEventListener('change',(e)=>{
   
     if(firstUser.value=='x'){
@@ -201,7 +245,7 @@ firstUser.addEventListener('change',(e)=>{
     
 })
 
-
+//This button will setup B user's ball, either x or 0
 secondUser.addEventListener('change',(e)=>{
     if(secondUser.value=='o'){
         secondUser.selectedIndex=0;
@@ -215,9 +259,8 @@ secondUser.addEventListener('change',(e)=>{
 
 })
 
+
+
 //calling the TicTacToe class to setup users
 const ticTacToe= new TicTacToe("x","y");
-ticTacToe.controlButton();
-
-
-
+//ticTacToe.controlButton();
