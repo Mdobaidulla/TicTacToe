@@ -1,10 +1,11 @@
 console.log("It is working");
+
 //Creating a global variable to cound the click and change the user;
 //let numberOfClick=0;
 class TicTacToe{
-    constructor(userA, userB){
-        this.userA=userA;
-        this.userB=userB;
+    constructor(){
+        this.userA='x';
+        this.userB='o';
         this.numberOfClick=0;
         this.scoreA=0;
         this.scoreB=0;
@@ -35,13 +36,33 @@ class TicTacToe{
                     if(ticTacToe.playerTurn()){
                         this.addBClick.push(index);
                         //This following code is for O sign
+                      //  boxButton.innerHTML='&#79;';
+
+
+                      //adding
+                      if(this.userA=='x'){
                         boxButton.innerHTML='&#79;';
-                        this.settingPlayerTurnBoxValue("X Turn",'#000000')
+                        boxButton.style.color='#B8B8B8';
+                      }else{
+                        boxButton.innerHTML='&#x2715;';
+                        boxButton.style.color='#FFFFFF';
+                      }
+                         //====
+                        this.settingPlayerTurnBoxValue("A Turn",'#000000')
                     }else{
+                        //ading
+                        if(this.userA=='o'){
+                            boxButton.innerHTML='&#79;';
+                            boxButton.style.color='#B8B8B8';
+                          }else{
+                            boxButton.innerHTML='&#x2715;';
+                            boxButton.style.color='#FFFFFF';
+                          }
+                        //===
                         this.addAClick.push(index);
                        //This following code is for  ✕ sing
-                        boxButton.innerHTML='&#x2715;';
-                        this.settingPlayerTurnBoxValue("O Turn",'#0602f5');
+                      //  boxButton.innerHTML='&#x2715;';
+                        this.settingPlayerTurnBoxValue("B Turn",'#0602f5');
                     }
                     this.numberOfClick++;
                     //console.log(this.addAClick, this.addBClick);
@@ -69,7 +90,7 @@ class TicTacToe{
     
 
             this.scoreA+=1;
-            this.settingPlayerTurnBoxValue("X WINNER!",'#008000');
+            this.settingPlayerTurnBoxValue("A WINNER!",'#008000');
             scoreAField.textContent=' '+this.scoreA;
             //This will play the sound for winner
             winner.play();
@@ -80,7 +101,7 @@ class TicTacToe{
              console.log("trying to get the value");
             this.scoreB+=1;
             console.log("WINNER B");
-            this.settingPlayerTurnBoxValue("O WINNER!!",'#008000')
+            this.settingPlayerTurnBoxValue("B WINNER!!",'#008000')
             scoreBField.textContent=' '+this.scoreB;
             winner.play();
             this.stopTheGameWhenWeFoundWinner();
@@ -90,7 +111,7 @@ class TicTacToe{
             this.scoreT+=1;
             console.log("The Game is Draw");
             draw.play();
-            this.settingPlayerTurnBoxValue("XO DRAW",'#FF0000')
+            this.settingPlayerTurnBoxValue(`${this.userA.toUpperCase()}${this.userB.toUpperCase()} DRAW`,'#FF0000')
             socreTieField.textContent=' '+this.scoreT;
 
         }
@@ -114,6 +135,8 @@ class TicTacToe{
         this.addAClick=[];
         this.addBClick=[];
         this.numberOfClick=0;
+        whosTurn.innerHTML='A Click on Sq box'
+        whosTurn.style.background='black';
         allBox.forEach(box =>{
             box.innerHTML='';
         })
@@ -136,9 +159,7 @@ let socreTieField=document.querySelector('.score3');
 //Find all the box to use as button
 const allBox=document.querySelectorAll('.sq');
 
-//Find all the users 
-const firstUser = document.querySelector('#selectUser1');
-const secondUser = document.querySelector('#selectUser2');
+
 
 //Find the element to set the value whos turn is now
 const whosTurn=document.querySelector('#currentPlayer');
@@ -162,10 +183,41 @@ playAgain.addEventListener('click',(e) => {
 });
 
 
+//Find all the users 
+const firstUser = document.querySelector('#selectUser1');
+const secondUser = document.querySelector('#selectUser2');
+
+firstUser.addEventListener('change',(e)=>{
+  
+    if(firstUser.value=='x'){
+        firstUser.selectedIndex=0;
+        secondUser.selectedIndex=0;
+    } else if(firstUser.value=='o'){
+        firstUser.selectedIndex=1;
+        secondUser.selectedIndex=1;
+    }
+    ticTacToe.userA=firstUser.value;
+    ticTacToe.userB=secondUser.value;
+    
+})
+
+
+secondUser.addEventListener('change',(e)=>{
+    if(secondUser.value=='o'){
+        secondUser.selectedIndex=0;
+        firstUser.selectedIndex=0;
+    } else if(secondUser.value=='x'){
+        secondUser.selectedIndex=1;
+        firstUser.selectedIndex=1;
+    } 
+    ticTacToe.userA=firstUser.value;
+    ticTacToe.userB=secondUser.value;
+
+})
 
 //calling the TicTacToe class to setup users
 const ticTacToe= new TicTacToe("x","y");
 ticTacToe.controlButton();
-// ticTacToe.findTheWinner();
+
 
 
