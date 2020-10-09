@@ -36,10 +36,6 @@ class TicTacToe{
                     if(ticTacToe.playerTurn()){
                         this.addBClick.push(index);
                         //This following code is for O sign
-                      //  boxButton.innerHTML='&#79;';
-
-
-                      //adding
                       if(this.userA=='x'){
                         boxButton.innerHTML='&#79;';
                         boxButton.style.color='#B8B8B8';
@@ -47,10 +43,8 @@ class TicTacToe{
                         boxButton.innerHTML='&#x2715;';
                         boxButton.style.color='#FFFFFF';
                       }
-                         //====
                         this.settingPlayerTurnBoxValue("A Turn",'#000000')
                     }else{
-                        //ading
                         if(this.userA=='o'){
                             boxButton.innerHTML='&#79;';
                             boxButton.style.color='#B8B8B8';
@@ -58,14 +52,11 @@ class TicTacToe{
                             boxButton.innerHTML='&#x2715;';
                             boxButton.style.color='#FFFFFF';
                           }
-                        //===
                         this.addAClick.push(index);
-                       //This following code is for  ✕ sing
-                      //  boxButton.innerHTML='&#x2715;';
+                        //This will change the display
                         this.settingPlayerTurnBoxValue("B Turn",'#0602f5');
                     }
                     this.numberOfClick++;
-                    //console.log(this.addAClick, this.addBClick);
                    this.findTheWinner(); 
                 }
             })
@@ -78,7 +69,6 @@ class TicTacToe{
         whosTurn.style.background=color;
     }
 
-
     //This method will itterate all the winning codition by using for loop
     //and there are two arrays named addAClick and addBClick generated based on the user clicked
     // Then use the if else condition to find what are the index value addAClick or addBClick array has 
@@ -87,8 +77,7 @@ class TicTacToe{
       for(let i=0; i<this.winningConditions.length; i++){
         let ep=this.winningConditions[i];
          if(this.addAClick.includes(ep[0]) && this.addAClick.includes(ep[1]) && this.addAClick.includes(ep[2])){
-    
-
+          this.highlightingWinner(ep[0],ep[1],ep[2]);
             this.scoreA+=1;
             this.settingPlayerTurnBoxValue("A WINNER!",'#008000');
             scoreAField.textContent=' '+this.scoreA;
@@ -98,7 +87,7 @@ class TicTacToe{
             this.stopTheGameWhenWeFoundWinner();
          }
          if(this.addBClick.includes(ep[0]) && this.addBClick.includes(ep[1]) && this.addBClick.includes(ep[2])){
-             console.log("trying to get the value");
+            this.highlightingWinner(ep[0],ep[1],ep[2]);
             this.scoreB+=1;
             console.log("WINNER B");
             this.settingPlayerTurnBoxValue("B WINNER!!",'#008000')
@@ -113,6 +102,10 @@ class TicTacToe{
             draw.play();
             this.settingPlayerTurnBoxValue(`${this.userA.toUpperCase()}${this.userB.toUpperCase()} DRAW`,'#FF0000')
             socreTieField.textContent=' '+this.scoreT;
+            allBox.forEach(btn => {
+                btn.style.background='#FF0000'
+            })
+
 
         }
     }
@@ -121,6 +114,11 @@ class TicTacToe{
         for(let i=0; i<=8; i++){
             this.check.push(i);
         }
+    }
+    highlightingWinner(index1,index2,index3){
+        allBox[index1].style.background='#00FF00';
+        allBox[index2].style.background='#00FF00';
+        allBox[index3].style.background='#00FF00';
     }
     restartTheGame(){
         this.scoreA=0;
@@ -139,6 +137,7 @@ class TicTacToe{
         whosTurn.style.background='black';
         allBox.forEach(box =>{
             box.innerHTML='';
+            box.style.background='#028779';
         })
     }
 
@@ -174,6 +173,7 @@ let draw = document.querySelector("#myDraw");
 //as zero for both user
 startBtn.addEventListener('click',(e) => {
    ticTacToe.restartTheGame(); 
+   socreTieField.innerHTML= 0;
 });
 
 //This button will update the socre with the previous score and
