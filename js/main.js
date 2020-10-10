@@ -1,7 +1,6 @@
 console.log("It is working");
 
 
-
 class TicTacToe{
     constructor(){
         this.userA='x';
@@ -15,7 +14,10 @@ class TicTacToe{
         this.addAClick=[];
         this.addBClick=[];
         this.manageAIIndex=0;
-        this.winningConditions = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+        this.winningConditions = [[0,1,2],[3,4,5],
+                                 [6,7,8],[0,3,6],
+                                 [1,4,7],[2,5,8],
+                                 [0,4,8],[2,4,6]];
         this.aiIndexGeneratorHelper= [[0,1],[1,2],[0,2],
                                       [3,4],[4,5],[3,5],
                                       [6,7],[7,8],[6,8],
@@ -45,9 +47,11 @@ class TicTacToe{
     controlButton(players){
         if(players=='me'){
             this.playGame();
-        }else{
+        }else if(players=="ai"){
              this.playGameWithAi();
                 console.log("AI will play here");
+        }else{
+            alert("Please select AI or Me");
         }
       }
 
@@ -84,51 +88,62 @@ class TicTacToe{
                     }
                 this.numberOfClick++;
                 this.findTheWinner(); 
-
-                //Keeping this clicked sound off as it is returning 404 error
-                //clickSound.play();
+                clickSound.play();
              }
           })    
        })
      }
-
+//This method will has all the button, when one button will be click, it has two steps to 
+//complete the action, first it will work on the button has been click, then it will wait 
+//a certain time, and complete the next click based on the avialbe index nubmber that has
+//not been click from the list of button. 
      playGameWithAi(){
-        let number=0;
+      
         allBox.forEach((boxButton, index) =>{
             
                 boxButton.addEventListener('click',(e)=>{
                     if(this.check.includes(index)){
-
                     }else{  
-                        boxButton.innerHTML='&#x2715;';
-                        boxButton.style.color='#B8B8B8';
+                        clickSound.play();
+                     
+                        if(this.userA=='x'){
+                            boxButton.innerHTML='&#x2715;';
+                            boxButton.style.color='#B8B8B8';
+                        }else{
+                            boxButton.innerHTML='&#79;';
+                            boxButton.style.color='#FFFFFF';  
+                        }
                         this.check.push(index);
                         this.addAClick.push(index);
                         this.findTheWinner(); 
                         
-                        if(this.check.length<9){
 
+                        if(this.check.length<9){
+                        this.settingPlayerTurnBoxValue("B Turn",'#827b79');
+                        allBox.forEach(b=>{
+                            b.disabled = true;
+                        })
                         setTimeout(()=>{
+                            clickSound.play();
                             let aiIndex=this.mainAIIndexGenerator();
+                            if(this.userB=='o'){
                             allBox[aiIndex].innerHTML='&#79;';
                             allBox[aiIndex].style.color='#FFFFFF';
+                            }else{
+                            allBox[aiIndex].innerHTML='&#x2715;';
+                            allBox[aiIndex].style.color='#FFFFFF';  
+                            }
                             this.check.push(aiIndex);
                             this.addBClick.push(aiIndex);
                             this.findTheWinner(); 
-                        },500)
+                            this.settingPlayerTurnBoxValue("A Turn",'#000000')
+                        },1000)
                     }
                        //this.mainAIIndexGenerator();    
                     }
-
+                    
                 })
-            
          })
-
-
-
-
-
-        
      }
 
      //This will generate a random number that will not be in teh check array 
@@ -138,7 +153,6 @@ class TicTacToe{
          while(this.check.includes(randomNumber)){
              randomNumber=  Math.floor((Math.random() * 8) + 1);
          }
-        
          return randomNumber;
      }
 //Working on this method to find the best index. for unbitable logic
@@ -229,14 +243,27 @@ class TicTacToe{
         allBox[index2].style.background='#00FF00';
         allBox[index3].style.background='#00FF00';
     }
+    //This method to select the second user, 
+    //This user can be user or AI
+    selectThePlayer(){
+        if(playerSelection.value=='me'){
+            console.log("selected me");
+            ticTacToe.controlButton("me");
+        }else{
+            ticTacToe.controlButton("ai");
+            console.log("selected ai");
+        }
+    }
     restartTheGame(){
         this.scoreA=0;
         this.scoreB=0;
         this.scoreT=0;
+        this.controlButton("NotRunning");
         scoreAField.innerHTML=0;
         scoreBField.innerHTML=0;
         playerSelection.selectedIndex=0;
         this.playTheGameAgain();
+
     }
     playTheGameAgain(){
         this.check=[];
@@ -290,14 +317,7 @@ let clickSound = document.querySelector("#myClick");
 const playerSelection = document.querySelector('#playerSelection');
 
 playerSelection.addEventListener('change',(e) =>{
-    if(playerSelection.value=='me'){
-        console.log("selected me");
-        ticTacToe.controlButton("me");
-    }else{
-        ticTacToe.controlButton("ai");
-        console.log("selected ai");
-    }
-
+ticTacToe.selectThePlayer();
 })
 
 
