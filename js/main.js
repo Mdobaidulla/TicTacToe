@@ -92,44 +92,32 @@ class TicTacToe{
        })
      }
 
-
      playGameWithAi(){
-        //this.generateRandomNumber();  
-        // setInterval(()=>{
-        //     console.log("from interval");
-        // },5000);
         let number=0;
         allBox.forEach((boxButton, index) =>{
             
                 boxButton.addEventListener('click',(e)=>{
                     if(this.check.includes(index)){
+
                     }else{  
                         boxButton.innerHTML='&#x2715;';
                         boxButton.style.color='#B8B8B8';
-                        console.log("I have clicked");
                         this.check.push(index);
                         this.addAClick.push(index);
-                        if(this.check.length<8){
-                        //let aiIndex= this.generateRandomNumber();
-                        let aiIndex=this.mainAIIndexGenerator();
-                       console.log(this.mainAIIndexGenerator());
-                        //AI part 
-                    
+                        this.findTheWinner(); 
+                        
+                        if(this.check.length<9){
+
+                        setTimeout(()=>{
+                            let aiIndex=this.mainAIIndexGenerator();
                             allBox[aiIndex].innerHTML='&#79;';
                             allBox[aiIndex].style.color='#FFFFFF';
                             this.check.push(aiIndex);
                             this.addBClick.push(aiIndex);
-                       
-                            //this.findTheWinner();
-                        }else{
-                            //this.stopTheGameWhenWeFoundWinner();
-                        }
-                        
-                       // setTimeout(()=>{
                             this.findTheWinner(); 
-                        //},500)
-                       this.mainAIIndexGenerator();    
-                       console.log(this.check);
+                        },500)
+                    }
+                       //this.mainAIIndexGenerator();    
                     }
 
                 })
@@ -145,10 +133,12 @@ class TicTacToe{
 
      //This will generate a random number that will not be in teh check array 
      generateRandomNumber(){
+       
          let randomNumber=  Math.floor((Math.random() * 8));
          while(this.check.includes(randomNumber)){
              randomNumber=  Math.floor((Math.random() * 8) + 1);
          }
+        
          return randomNumber;
      }
 //Working on this method to find the best index. for unbitable logic
@@ -161,13 +151,23 @@ class TicTacToe{
         this.aiIndexGeneratorHelper.forEach((posible,index) => {
             let a=posible[0];
             let b=posible[1];
-            if(this.addAClick.includes(a)&&this.addAClick.includes(b)){
+            if(this.addBClick.includes(a)&&this.addBClick.includes(b)){
                 if(!this.check.includes(this.replaceingIndex[index])){
-                sendingValue= this.replaceingIndex[index];
+                    sendingValue= this.replaceingIndex[index];
+                  }
+            }
+            else if(this.addAClick.includes(a)&&this.addAClick.includes(b)){
+                if(!this.check.includes(this.replaceingIndex[index])){
+                  sendingValue= this.replaceingIndex[index];
                 }
             }
         })
        }
+       if(this.check.includes(sendingValue)){
+           sendingValue=this.generateRandomNumber();
+           console.log('last If block',sendingValue);
+       }
+      
      return sendingValue;
     }
 
