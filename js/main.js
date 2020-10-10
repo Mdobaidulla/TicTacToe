@@ -14,7 +14,24 @@ class TicTacToe{
         this.check=[];
         this.addAClick=[];
         this.addBClick=[];
+        this.manageAIIndex=0;
         this.winningConditions = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+        this.aiIndexGeneratorHelper= [[0,1],[1,2],[0,2],
+                                      [3,4],[4,5],[3,5],
+                                      [6,7],[7,8],[6,8],
+                                      [0,3],[3,6],[0,6],
+                                      [1,4],[4,7],[1,7],
+                                      [2,5],[5,8],[2,8],
+                                      [0,4],[4,8],[0,8],
+                                      [2,4],[4,6],[2,6]];
+        this.replaceingIndex=[2,0,1,
+                              5,3,4,
+                              8,6,7,
+                              6,0,3,
+                              7,1,4,
+                              8,2,5,
+                              8,0,4,
+                              6,2,4]
     }
     playerTurn(){
         if(this.numberOfClick%2==0){
@@ -29,49 +46,132 @@ class TicTacToe{
         if(players=='me'){
             this.playGame();
         }else{
+             this.playGameWithAi();
                 console.log("AI will play here");
         }
-  }
+      }
 
-  playGame(){
-    allBox.forEach((boxButton, index) =>{
-        boxButton.addEventListener('click', (e) =>{
+    playGame(){
+        allBox.forEach((boxButton, index) =>{
+          boxButton.addEventListener('click', (e) =>{
             //adding this condision for disable the button after clicking one
             if(this.check.includes(index)){
-            }else{
-                this.check.push(index);
-                //This condision is used to change the player who will click on it
-                if(ticTacToe.playerTurn()){
-                    this.addBClick.push(index);
-                    //This following code is for O sign
-                if(this.userA=='x'){
-                    boxButton.innerHTML='&#79;';
-                    boxButton.style.color='#B8B8B8';
                 }else{
-                    boxButton.innerHTML='&#x2715;';
-                    boxButton.style.color='#FFFFFF';
-                }
-                    this.settingPlayerTurnBoxValue("A Turn",'#000000')
-                }else{
-                    if(this.userA=='o'){
-                        boxButton.innerHTML='&#79;';
-                        boxButton.style.color='#B8B8B8';
+                    this.check.push(index);
+                    //This condision is used to change the player who will click on it
+                    if(ticTacToe.playerTurn()){
+                        this.addBClick.push(index);
+                        //This following code is for O sign
+                        if(this.userA=='x'){
+                            boxButton.innerHTML='&#79;';
+                            boxButton.style.color='#B8B8B8';
+                        }else{
+                            boxButton.innerHTML='&#x2715;';
+                            boxButton.style.color='#FFFFFF';
+                        }
+                        this.settingPlayerTurnBoxValue("A Turn",'#000000')
                     }else{
-                        boxButton.innerHTML='&#x2715;';
-                        boxButton.style.color='#FFFFFF';
+                        if(this.userA=='o'){
+                            boxButton.innerHTML='&#79;';
+                            boxButton.style.color='#B8B8B8';
+                        }else{
+                            boxButton.innerHTML='&#x2715;';
+                            boxButton.style.color='#FFFFFF';
+                        }
+                        this.addAClick.push(index);
+                        //This will change the display
+                        this.settingPlayerTurnBoxValue("B Turn",'#827b79');
                     }
-                    this.addAClick.push(index);
-                    //This will change the display
-                    this.settingPlayerTurnBoxValue("B Turn",'#827b79');
-                }
                 this.numberOfClick++;
-            this.findTheWinner(); 
-            clickSound.play();
+                this.findTheWinner(); 
+
+                //Keeping this clicked sound off as it is returning 404 error
+                //clickSound.play();
+             }
+          })    
+       })
+     }
+
+
+     playGameWithAi(){
+        //this.generateRandomNumber();  
+        // setInterval(()=>{
+        //     console.log("from interval");
+        // },5000);
+        let number=0;
+        allBox.forEach((boxButton, index) =>{
+            
+                boxButton.addEventListener('click',(e)=>{
+                    if(this.check.includes(index)){
+                    }else{  
+                        boxButton.innerHTML='&#x2715;';
+                        boxButton.style.color='#B8B8B8';
+                        console.log("I have clicked");
+                        this.check.push(index);
+                        this.addAClick.push(index);
+                        if(this.check.length<8){
+                        //let aiIndex= this.generateRandomNumber();
+                        let aiIndex=this.mainAIIndexGenerator();
+                       console.log(this.mainAIIndexGenerator());
+                        //AI part 
+                    
+                            allBox[aiIndex].innerHTML='&#79;';
+                            allBox[aiIndex].style.color='#FFFFFF';
+                            this.check.push(aiIndex);
+                            this.addBClick.push(aiIndex);
+                       
+                            //this.findTheWinner();
+                        }else{
+                            //this.stopTheGameWhenWeFoundWinner();
+                        }
+                        
+                       // setTimeout(()=>{
+                            this.findTheWinner(); 
+                        //},500)
+                       this.mainAIIndexGenerator();    
+                       console.log(this.check);
+                    }
+
+                })
+            
+         })
+
+
+
+
+
+        
+     }
+
+     //This will generate a random number that will not be in teh check array 
+     generateRandomNumber(){
+         let randomNumber=  Math.floor((Math.random() * 8));
+         while(this.check.includes(randomNumber)){
+             randomNumber=  Math.floor((Math.random() * 8) + 1);
+         }
+         return randomNumber;
+     }
+//Working on this method to find the best index. for unbitable logic
+     mainAIIndexGenerator(){
+        let sendingValue=0;
+
+        if(this.check.length<2){
+            sendingValue=this.generateRandomNumber();
+        }else{
+        this.aiIndexGeneratorHelper.forEach((posible,index) => {
+            let a=posible[0];
+            let b=posible[1];
+            if(this.addAClick.includes(a)&&this.addAClick.includes(b)){
+                if(!this.check.includes(this.replaceingIndex[index])){
+                sendingValue= this.replaceingIndex[index];
+                }
             }
         })
-        
-    })
-  }
+       }
+     return sendingValue;
+    }
+
+
     //Set different backgroun when user Turn change
     settingPlayerTurnBoxValue(textValue,color){
         whosTurn.innerHTML=textValue;
@@ -150,13 +250,11 @@ class TicTacToe{
             box.style.background='#028779';
         })
     }
-    aiPlayer(){
-        Math.floor((Math.random() * 10) + 1);
-
-    }
+   
 
 
 }
+
 
 //Find all the Button elements from UI
 const startBtn = document.querySelector("#startBtn")
@@ -182,11 +280,6 @@ const whosTurn=document.querySelector('#currentPlayer');
 let winner = document.querySelector("#myWinner");
 let draw = document.querySelector("#myDraw");
 let clickSound = document.querySelector("#myClick");
-console.log(clickSound);
-
-
-
-
 
 
 
