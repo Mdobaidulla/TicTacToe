@@ -66,10 +66,10 @@ class TicTacToe{
            this.controlMe=false;
            this.controlAi=false;
            console.log("This from else");
-           allBox.forEach(btn =>{
-               btn.addEventListener('click',(e) =>{
-                   alert("Please select user To Start")})
-           })
+        //    allBox.forEach(btn =>{
+        //        btn.addEventListener('click',(e) =>{
+        //            alert("Please select user To Start")})
+        //    })
              
             
         }
