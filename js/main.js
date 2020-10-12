@@ -9,6 +9,8 @@ class TicTacToe{
         this.scoreA=0;
         this.scoreB=0;
         this.scoreT=0;
+        this.controlMe=false;
+        this.controlAi=false;
         //This will help to control for not clicking the button more than one
         this.check=[];
         this.addAClick=[];
@@ -35,6 +37,10 @@ class TicTacToe{
                               8,0,4,
                               6,2,4]
     }
+    /**
+     * This method will return true for allowing to click user A
+     * and change to false for allowing user B to click 
+     */
     playerTurn(){
         if(this.numberOfClick%2==0){
             return false;
@@ -42,22 +48,45 @@ class TicTacToe{
             return true;
         }
     }
-    //This function will control all the click in the box,
-    //Changing the value on each box
-    controlButton(players){
-        if(players=='me'){
+
+
+    //This method to select the second user, 
+    //This user can be user or AI
+    selectThePlayer(userSelctedValue){
+        if(userSelctedValue=='me'){
+            this.controlMe=true;
             this.playGame();
-        }else if(players=="ai"){
-             this.playGameWithAi();
-                console.log("AI will play here");
+            console.log("selected me");
+        }else if(userSelctedValue=='ai'){
+            this.controlAi=true;
+            this.playGameWithAi();
+            console.log(this.controlAi);
+            console.log("selected ai");
         }else{
-            alert("Please select AI or Me");
+           this.controlMe=false;
+           this.controlAi=false;
+           console.log("This from else");
+           allBox.forEach(btn =>{
+               btn.addEventListener('click',(e) =>{
+                   alert("Please select user To Start")})
+           })
+             
+            
         }
-      }
+    }
+
+
+
+
+
+
 
     playGame(){
+      
         allBox.forEach((boxButton, index) =>{
           boxButton.addEventListener('click', (e) =>{
+
+            if(this.controlMe){
             //adding this condision for disable the button after clicking one
             if(this.check.includes(index)){
                 }else{
@@ -66,22 +95,38 @@ class TicTacToe{
                     if(ticTacToe.playerTurn()){
                         this.addBClick.push(index);
                         //This following code is for O sign
+
                         if(this.userA=='x'){
                             boxButton.innerHTML='&#79;';
-                            boxButton.style.color='#B8B8B8';
-                        }else{
-                            boxButton.innerHTML='&#x2715;';
                             boxButton.style.color='#FFFFFF';
+                        }else if(this.userA=='o'){
+                            boxButton.innerHTML='&#x2715;';
+                            boxButton.style.color='#B8B8B8'; 
+                        }else if(this.userA=='cat'){
+                            boxButton.appendChild(this.createDogElement());
+                        }else if(this.userA='dog'){
+                            boxButton.appendChild(this.createCatElement());
+                            
                         }
+
                         this.settingPlayerTurnBoxValue("A Turn",'#000000')
                     }else{
-                        if(this.userA=='o'){
-                            boxButton.innerHTML='&#79;';
-                            boxButton.style.color='#B8B8B8';
-                        }else{
+                        if(this.userB=='o'){
                             boxButton.innerHTML='&#x2715;';
-                            boxButton.style.color='#FFFFFF';
-                        }
+                            boxButton.style.color='#B8B8B8';  
+                            }else if(this.userB=='x'){
+                                boxButton.innerHTML='&#79;';
+                                boxButton.style.color='#FFFFFF';
+                           
+                            }else if(this.userB=='cat'){
+                               boxButton.appendChild(this.createDogElement());
+                            }else if(this.userB='dog'){
+                            
+                               boxButton.appendChild(this.createCatElement());
+                            }
+
+
+
                         this.addAClick.push(index);
                         //This will change the display
                         this.settingPlayerTurnBoxValue("B Turn",'#827b79');
@@ -90,90 +135,130 @@ class TicTacToe{
                 this.findTheWinner(); 
                 clickSound.play();
              }
+            }
           })    
        })
+
+    
      }
 //This method will has all the button, when one button will be click, it has two steps to 
 //complete the action, first it will work on the button has been click, then it will wait 
 //a certain time, and complete the next click based on the avialbe index nubmber that has
 //not been click from the list of button. 
      playGameWithAi(){
-      
+        
         allBox.forEach((boxButton, index) =>{
-            
                 boxButton.addEventListener('click',(e)=>{
-                    if(this.check.includes(index)){
-                    }else{  
-                        clickSound.play();
-                     
-                        if(this.userA=='x'){
-                            boxButton.innerHTML='&#x2715;';
-                            boxButton.style.color='#B8B8B8';
-                        }else{
-                            boxButton.innerHTML='&#79;';
-                            boxButton.style.color='#FFFFFF';  
-                        }
-                        this.check.push(index);
-                        this.addAClick.push(index);
-                        this.findTheWinner(); 
+                    //This if else will control if the user change the player, or reset it, then they need to set the player again.
+                    if(this.controlAi){
+                        if(this.check.includes(index)){
+                        }else{  
+                            clickSound.play();
+                            if(this.userA=='x'){
+                                boxButton.innerHTML='&#x2715;';
+                                boxButton.style.color='#B8B8B8';
+                            }else if(this.userA=='o'){
+                                boxButton.innerHTML='&#79;';
+                                boxButton.style.color='#FFFFFF';  
+                            }else if(this.userA=='cat'){
+                                boxButton.appendChild(this.createCatElement());
+                            }else if(this.userA='dog'){
+                                boxButton.appendChild(this.createDogElement());
+                            }
+
+
+                            
+                            this.check.push(index);
+                            this.addAClick.push(index);
+                            this.findTheWinner(); 
                         
 
-                        if(this.check.length<9){
-                        this.settingPlayerTurnBoxValue("B Turn",'#827b79');
-                        allBox.forEach(b=>{
-                            b.disabled = true;
-                        })
-                        setTimeout(()=>{
+                            if(this.check.length<9){
+                                 this.settingPlayerTurnBoxValue("B Turn",'#827b79');
+                            allBox.forEach(b=>{
+                                 b.disabled = true;
+                            })
+                            setTimeout(()=>{
                             clickSound.play();
                             let aiIndex=this.mainAIIndexGenerator();
                             if(this.userB=='o'){
                             allBox[aiIndex].innerHTML='&#79;';
                             allBox[aiIndex].style.color='#FFFFFF';
-                            }else{
+                            }else if(this.userB=='x'){
                             allBox[aiIndex].innerHTML='&#x2715;';
-                            allBox[aiIndex].style.color='#FFFFFF';  
+                            allBox[aiIndex].style.color='#B8B8B8';  
+                            }else if(this.userB=='cat'){
+                                allBox[aiIndex].appendChild(this.createCatElement());
+                            }else if(this.userB='dog'){
+                                 allBox[aiIndex].appendChild(this.createDogElement());
                             }
                             this.check.push(aiIndex);
                             this.addBClick.push(aiIndex);
                             this.findTheWinner(); 
                             this.settingPlayerTurnBoxValue("A Turn",'#000000')
-                        },1000)
-                    }
+                            },1000)
+                            }
                        //this.mainAIIndexGenerator();    
+                        } 
+                        
+                        
                     }
-                    
-                })
-         })
+
+                    })
+
+
+
+
+                }) 
+            
+    
      }
+     createDogElement(){
+        const dogImage=document.createElement("img");
+        dogImage.setAttribute('src','images/dog.jpg');
+        dogImage.style.width='99px';
+        dogImage.style.height='99px';
+        return dogImage;
+     }
+
+     createCatElement(){
+        const catImage=document.createElement("img");
+            catImage.setAttribute('src','images/cat.jpeg');
+            catImage.style.width='99px';
+            catImage.style.height='99px';
+        return catImage;
+     }
+
+
 
      //This will generate a random number that will not be in teh check array 
      generateRandomNumber(){
-       
          let randomNumber=  Math.floor((Math.random() * 8));
          while(this.check.includes(randomNumber)){
              randomNumber=  Math.floor((Math.random() * 8) + 1);
          }
          return randomNumber;
      }
+
+
 //Working on this method to find the best index. for unbitable logic
      mainAIIndexGenerator(){
         let sendingValue=0;
-
         if(this.check.length<2){
             sendingValue=this.generateRandomNumber();
         }else{
         this.aiIndexGeneratorHelper.forEach((posible,index) => {
             let a=posible[0];
             let b=posible[1];
-            if(this.addBClick.includes(a)&&this.addBClick.includes(b)){
-                if(!this.check.includes(this.replaceingIndex[index])){
+            if((this.addBClick.includes(a)&&this.addBClick.includes(b))&&(!this.check.includes(this.replaceingIndex[index]))){
+                //if(!this.check.includes(this.replaceingIndex[index])){
                     sendingValue= this.replaceingIndex[index];
-                  }
+                 // }
             }
-            else if(this.addAClick.includes(a)&&this.addAClick.includes(b)){
-                if(!this.check.includes(this.replaceingIndex[index])){
+            else if((this.addAClick.includes(a)&&this.addAClick.includes(b))&&(!this.check.includes(this.replaceingIndex[index]))){
+                //if(!this.check.includes(this.replaceingIndex[index])){
                   sendingValue= this.replaceingIndex[index];
-                }
+                //}
             }
         })
        }
@@ -226,7 +311,8 @@ class TicTacToe{
             this.settingPlayerTurnBoxValue(`${this.userA.toUpperCase()}${this.userB.toUpperCase()} DRAW`,'#FF0000')
             socreTieField.textContent=' '+this.scoreT;
             allBox.forEach(btn => {
-                btn.style.background='#FF0000'
+                btn.style.background='#FF0000';
+              
             })
 
 
@@ -240,25 +326,20 @@ class TicTacToe{
     }
     highlightingWinner(index1,index2,index3){
         allBox[index1].style.background='#00FF00';
+       // allBox[index1].style.border='1px solid #00FF00';
         allBox[index2].style.background='#00FF00';
+       // allBox[index2].style.border='1px solid #00FF00';
         allBox[index3].style.background='#00FF00';
+       // allBox[index3].style.border='1px solid #00FF00';
+        
     }
-    //This method to select the second user, 
-    //This user can be user or AI
-    selectThePlayer(){
-        if(playerSelection.value=='me'){
-            console.log("selected me");
-            ticTacToe.controlButton("me");
-        }else{
-            ticTacToe.controlButton("ai");
-            console.log("selected ai");
-        }
-    }
+
+
     restartTheGame(){
         this.scoreA=0;
         this.scoreB=0;
         this.scoreT=0;
-        this.controlButton("NotRunning");
+        this.selectThePlayer("SOTP FUNCTIONNING");
         scoreAField.innerHTML=0;
         scoreBField.innerHTML=0;
         playerSelection.selectedIndex=0;
@@ -312,12 +393,11 @@ let clickSound = document.querySelector("#myClick");
 
 
 
-
 //Find the player to start playing
 const playerSelection = document.querySelector('#playerSelection');
-
 playerSelection.addEventListener('change',(e) =>{
-ticTacToe.selectThePlayer();
+    let selectedValue=playerSelection.value;
+    ticTacToe.selectThePlayer(selectedValue);
 })
 
 
@@ -352,7 +432,14 @@ firstUser.addEventListener('change',(e)=>{
     } else if(firstUser.value=='o'){
         firstUser.selectedIndex=1;
         secondUser.selectedIndex=1;
+    }else if(firstUser.value=='cat'){
+        firstUser.selectedIndex=2;
+        secondUser.selectedIndex=3;
+    } else if(firstUser.value=='dog'){
+        firstUser.selectedIndex=3;
+        secondUser.selectedIndex=2;
     }
+
     ticTacToe.userA=firstUser.value;
     ticTacToe.userB=secondUser.value;
     
@@ -366,7 +453,14 @@ secondUser.addEventListener('change',(e)=>{
     } else if(secondUser.value=='x'){
         secondUser.selectedIndex=1;
         firstUser.selectedIndex=1;
-    } 
+    }  else if(secondUser.value=='cat'){
+        secondUser.selectedIndex=2;
+        firstUser.selectedIndex=3;
+    } else if(secondUser.value=='dog'){
+        secondUser.selectedIndex=3;
+        firstUser.selectedIndex=2;
+    }
+
     ticTacToe.userA=firstUser.value;
     ticTacToe.userB=secondUser.value;
 
