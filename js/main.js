@@ -10,19 +10,24 @@ class TicTacToe{
         this.scoreB=0;
         this.scoreT=0;
         this.controlMe=false;
-        this.controlAi=false;
+        this.controlMedium=false;
         this.controlEasy=false;
         this.soundOnOff=true;
-        
-        //This will help to control for not clicking the button more than one
         this.check=[];
         this.addAClick=[];
         this.addBClick=[];
         this.manageAIIndex=0;
+ /**
+  * This array holds the winning index
+  */
         this.winningConditions = [[0,1,2],[3,4,5],
                                  [6,7,8],[0,3,6],
                                  [1,4,7],[2,5,8],
                                  [0,4,8],[2,4,6]];
+    /**
+     * The possible winning situation when the first user will have
+     * at least two index for winning, 
+     */
         this.aiIndexGeneratorHelper= [[0,1],[1,2],[0,2],
                                       [3,4],[4,5],[3,5],
                                       [6,7],[7,8],[6,8],
@@ -41,6 +46,8 @@ class TicTacToe{
                               6,2,4]
     }
     
+
+
     /**
      * This method will return true for allowing to click user A
      * and change to false for allowing user B to click 
@@ -55,22 +62,29 @@ class TicTacToe{
     }
 
 
-    //This method to select the second user, 
-    //This user can be user or AI
+    
+
+    /**
+     * This method will take the value that user will select from the select option
+     * User has the option to select Play himself that will return me,
+     * User has the option to select Level Easy that will return easy,
+     * user has teh option to select Level Medium that will return ai
+     * @param {*} userSelctedValue 
+     */
     selectThePlayer(userSelctedValue){
         if(userSelctedValue=='me'){
             this.controlMe=true;
             this.playGame();
-        }else if(userSelctedValue=='ai'){
-            this.controlAi=true;
-            this.playGameWithAi();
+        }else if(userSelctedValue=='medium'){
+            this.controlMedium=true;
+            this.playeGameWithMediumLevel();
         }else if(userSelctedValue=='easy'){
             this.controlEasy=true;
             this.playGameWithAiEasyLevel();
         }else{
             this.controlEasy=false;
             this.controlMe=false;
-            this.controlAi=false;
+            this.controlMedium=false;
         }
     }
 
@@ -111,7 +125,6 @@ class TicTacToe{
                             boxButton.appendChild(this.createDogElement());
                         }else if(this.userA='dog'){
                             boxButton.appendChild(this.createCatElement());
-                            
                         }
 
                         this.settingPlayerTurnBoxValue("A Turn",'#000000')
@@ -130,8 +143,6 @@ class TicTacToe{
                                boxButton.appendChild(this.createCatElement());
                             }
 
-
-
                         this.addAClick.push(index);
                         //This will change the display
                         this.settingPlayerTurnBoxValue("B Turn",'#827b79');
@@ -142,140 +153,66 @@ class TicTacToe{
              }
             }
           })    
-       })
-
+        })
     
      }
+
+
+
+
+
 /**
  * This method will control userB by generating random number 
  * That random number will be use for each of the squire button index 
  * number, based on the index number userB will play.
  */
-
      playGameWithAiEasyLevel(){
-        
         allBox.forEach((boxButton, index) =>{
                 boxButton.addEventListener('click',(e)=>{
                     //This if else will control if the user change the player, or reset it, then they need to set the player again.
                     if(this.controlEasy){
                         if(this.check.includes(index)){
                         }else{  
-                            clickSound.play();
-                            if(this.userA=='x'){
-                                boxButton.innerHTML='&#x2715;';
-                                boxButton.style.color='#B8B8B8';
-                            }else if(this.userA=='o'){
-                                boxButton.innerHTML='&#79;';
-                                boxButton.style.color='#FFFFFF';  
-                            }else if(this.userA=='cat'){
-                                boxButton.appendChild(this.createCatElement());
-                            }else if(this.userA='dog'){
-                                boxButton.appendChild(this.createDogElement());
-                            }
-                            this.check.push(index);
-                            this.addAClick.push(index);
-                            this.findTheWinner(); 
-                        
-
+                            this.generateHumanPlayer(boxButton, index);
                             if(this.check.length<9){
                                  this.settingPlayerTurnBoxValue("B Turn",'#827b79');
                             allBox.forEach(b=>{
                                  b.disabled = true;
                             })
-                            setTimeout(()=>{
-                            clickSound.play();
-                            //let aiIndex=this.mainAIIndexGenerator();
-                            let aiIndex=this.generateRandomNumber();
-                            if(this.userB=='o'){
-                            allBox[aiIndex].innerHTML='&#79;';
-                            allBox[aiIndex].style.color='#FFFFFF';
-                            }else if(this.userB=='x'){
-                            allBox[aiIndex].innerHTML='&#x2715;';
-                            allBox[aiIndex].style.color='#B8B8B8';  
-                            }else if(this.userB=='cat'){
-                                allBox[aiIndex].appendChild(this.createCatElement());
-                            }else if(this.userB='dog'){
-                                 allBox[aiIndex].appendChild(this.createDogElement());
-                            }
-                            this.check.push(aiIndex);
-                            this.addBClick.push(aiIndex);
-                            this.findTheWinner(); 
-                            this.settingPlayerTurnBoxValue("A Turn",'#000000')
-                            },1000)
+                            this.generateAIPlayer(this.generateRandomNumber());
                             }   
                         } 
                         
-                        
                     }
 
-                    })
-
-
-
-
-                })    
-    
+                })
+            })    
      }
 
 
 
 
-//This method will has all the button, when one button will be click, it has two steps to 
-//complete the action, first it will work on the button has been click, then it will wait 
-//a certain time, and complete the next click based on the avialbe index nubmber that has
-//not been click from the list of button. 
-     playGameWithAi(){
-        
+
+/**
+ * This method will has all the button, when one button will be click, it has two steps to 
+ * complete the action, first it will work on the button has been click, then it will wait 
+ * a certain time, and complete the next click based on the avialbe index nubmber that has
+ * not been click from the list of button. 
+*/
+     playeGameWithMediumLevel(){
         allBox.forEach((boxButton, index) =>{
                 boxButton.addEventListener('click',(e)=>{
                     //This if else will control if the user change the player, or reset it, then they need to set the player again.
-                    if(this.controlAi){
+                    if(this.controlMedium){
                         if(this.check.includes(index)){
-                        }else{  
-                            clickSound.play();
-                            if(this.userA=='x'){
-                                boxButton.innerHTML='&#x2715;';
-                                boxButton.style.color='#B8B8B8';
-                            }else if(this.userA=='o'){
-                                boxButton.innerHTML='&#79;';
-                                boxButton.style.color='#FFFFFF';  
-                            }else if(this.userA=='cat'){
-                                boxButton.appendChild(this.createCatElement());
-                            }else if(this.userA='dog'){
-                                boxButton.appendChild(this.createDogElement());
-                            }
-
-
-                            
-                            this.check.push(index);
-                            this.addAClick.push(index);
-                            this.findTheWinner(); 
-                        
-
+                        }else{ 
+                            this.generateHumanPlayer(boxButton, index);
                             if(this.check.length<9){
-                                 this.settingPlayerTurnBoxValue("B Turn",'#827b79');
+                            this.settingPlayerTurnBoxValue("B Turn",'#827b79');
                             allBox.forEach(b=>{
                                  b.disabled = true;
                             })
-                            setTimeout(()=>{
-                            clickSound.play();
-                            let aiIndex=this.mainAIIndexGenerator();
-                            if(this.userB=='o'){
-                            allBox[aiIndex].innerHTML='&#79;';
-                            allBox[aiIndex].style.color='#FFFFFF';
-                            }else if(this.userB=='x'){
-                            allBox[aiIndex].innerHTML='&#x2715;';
-                            allBox[aiIndex].style.color='#B8B8B8';  
-                            }else if(this.userB=='cat'){
-                                allBox[aiIndex].appendChild(this.createCatElement());
-                            }else if(this.userB='dog'){
-                                 allBox[aiIndex].appendChild(this.createDogElement());
-                            }
-                            this.check.push(aiIndex);
-                            this.addBClick.push(aiIndex);
-                            this.findTheWinner(); 
-                            this.settingPlayerTurnBoxValue("A Turn",'#000000')
-                            },1000)
+                            this.generateAIPlayer(this.mainAIIndexGenerator());
                             }  
                         } 
                     }
@@ -283,6 +220,74 @@ class TicTacToe{
                 })
             }) 
      }
+
+
+
+
+
+
+     /**
+      * To play againsed AI, we need to have the button and the button index for changing differnt color 
+      * sign and imagese, that is controled by the following method. 
+      * @param {} boxButton 
+      * @param {*} index 
+      */
+     generateHumanPlayer(boxButton, index){
+        clickSound.play();
+        if(this.userA=='x'){
+            boxButton.innerHTML='&#x2715;';
+            boxButton.style.color='#B8B8B8';
+        }else if(this.userA=='o'){
+            boxButton.innerHTML='&#79;';
+            boxButton.style.color='#FFFFFF';  
+        }else if(this.userA=='cat'){
+            boxButton.appendChild(this.createCatElement());
+        }else if(this.userA='dog'){
+            boxButton.appendChild(this.createDogElement());
+        }
+        this.check.push(index);
+        this.addAClick.push(index);
+        this.findTheWinner(); 
+     }
+
+
+
+
+
+
+     /**
+      * This method will take the generated random number and play againsed human,
+      * We can send only the random number which is consider here as easy level
+      * We can send random nuber after some types of filtering, that is consider here as medium level
+      * @param {} aiIndex 
+      */
+     generateAIPlayer(aiIndex){
+        setTimeout(()=>{
+            clickSound.play();
+            this.settingPlayerTurnBoxValue("A Turn",'#000000')
+            //let aiIndex=this.mainAIIndexGenerator();
+            if(this.userB=='o'){
+            allBox[aiIndex].innerHTML='&#79;';
+            allBox[aiIndex].style.color='#FFFFFF';
+            }else if(this.userB=='x'){
+            allBox[aiIndex].innerHTML='&#x2715;';
+            allBox[aiIndex].style.color='#B8B8B8';  
+            }else if(this.userB=='cat'){
+                allBox[aiIndex].appendChild(this.createCatElement());
+            }else if(this.userB='dog'){
+                 allBox[aiIndex].appendChild(this.createDogElement());
+            }
+            this.check.push(aiIndex);
+            this.addBClick.push(aiIndex);
+            this.findTheWinner(); 
+            
+            },1000)
+     }
+
+
+
+
+
      /**
       * Adding dog in the box, this method is created, that will
       * select the dog image and add in appropriate div. 
@@ -294,6 +299,10 @@ class TicTacToe{
         dogImage.style.height='99px';
         return dogImage;
      }
+
+
+
+
 
 
      /**
@@ -310,6 +319,8 @@ class TicTacToe{
 
 
 
+
+
      /**
       * This will generate a random number that will not be in the check array 
       * There for the generated number can be used for selecting the div index that
@@ -322,6 +333,10 @@ class TicTacToe{
          }
          return randomNumber;
      }
+
+
+
+
 
     /**
      * This method will generate the availabe index number by following some of the logic
@@ -353,23 +368,22 @@ class TicTacToe{
     }
 
 
-    //Set different backgroun when user Turn change
-    settingPlayerTurnBoxValue(textValue,color){
-        whosTurn.innerHTML=textValue;
-        whosTurn.style.background=color;
-    }
 
-    //This method will itterate all the winning codition by using for loop
-    //and there are two arrays named addAClick and addBClick generated based on the user clicked
-    // Then use the if else condition to find what are the index value addAClick or addBClick array has 
-    //and compare with the winning condition array to find the winner. 
+
+   
+   /**
+    * This method will itterate all the winning codition by using for loop
+    * and there are two arrays named addAClick and addBClick generated based on the user clicked
+    *  Then use the if else condition to find what are the index value addAClick or addBClick array has 
+    * and compare with the winning condition array to find the winner. 
+    */
     findTheWinner(){
       for(let i=0; i<this.winningConditions.length; i++){
         let ep=this.winningConditions[i];
          if(this.addAClick.includes(ep[0]) && this.addAClick.includes(ep[1]) && this.addAClick.includes(ep[2])){
           this.highlightingWinner(ep[0],ep[1],ep[2]);
             this.scoreA+=1;
-            this.settingPlayerTurnBoxValue("A WINNER!",'#008000');
+            this.settingPlayerTurnBoxValue("A WINNER!",'#00FF00');
             scoreAField.textContent=' '+this.scoreA;
             //This will play the sound for winner
             winner.play();
@@ -380,17 +394,18 @@ class TicTacToe{
             this.highlightingWinner(ep[0],ep[1],ep[2]);
             this.scoreB+=1;
             console.log("WINNER B");
-            this.settingPlayerTurnBoxValue("B WINNER!!",'#008000')
+            this.settingPlayerTurnBoxValue("B WINNER!",'#00FF00');
             scoreBField.textContent=' '+this.scoreB;
             winner.play();
             this.stopTheGameWhenWeFoundWinner();
+            
         }
       }
         if(this.check.length===9){
             this.scoreT+=1;
             console.log("The Game is Draw");
             draw.play();
-            this.settingPlayerTurnBoxValue(`${this.userA.toUpperCase()}${this.userB.toUpperCase()} DRAW`,'#FF0000')
+            this.settingPlayerTurnBoxValue(`${this.userA.toUpperCase()} ${this.userB.toUpperCase()} DRAW`,'#FF0000')
             socreTieField.textContent=' '+this.scoreT;
             allBox.forEach(btn => {
                 btn.style.background='#FF0000';
@@ -400,6 +415,10 @@ class TicTacToe{
 
         }
     }
+
+
+
+
     /**
      * This method will set all the index in the check array 
      * that we have used to protect each of the box from double click
@@ -410,6 +429,19 @@ class TicTacToe{
         }
     }
 
+
+       
+        /**
+         * Based on the current sitution, it will change the color and text in the display box
+         * One for changing user
+         * second for showing winner, or draw situation. 
+         * @param {*} textValue 
+         * @param {*} color 
+         */
+        settingPlayerTurnBoxValue(textValue,color){
+            whosTurn.innerHTML=textValue;
+            whosTurn.style.background=color;
+        }
 
     /**
      * This method will take the index number for each of the box
@@ -452,6 +484,13 @@ class TicTacToe{
         }
    }
 
+
+
+   /**
+    * It will reset everything to the begining leve, 
+    * That means user will start from beganing of the game.
+    */
+
     restartTheGame(){
         this.scoreA=0;
         this.scoreB=0;
@@ -463,13 +502,21 @@ class TicTacToe{
         this.playTheGameAgain();
 
     }
+
+
+
+
+    /**
+     * Reseting the bord and adding all the array that were used for holding users click.
+     * and total click. 
+     */
     playTheGameAgain(){
         this.check=[];
         this.addAClick=[];
         this.addBClick=[];
         this.numberOfClick=0;
-        whosTurn.innerHTML='A Click on Sq box'
-        whosTurn.style.background='black';
+        whosTurn.innerHTML='Play Again';
+        whosTurn.style.background='#028779';
         allBox.forEach(box =>{
             box.innerHTML='';
             box.style.background='#028779';
@@ -522,25 +569,43 @@ playerSelection.addEventListener('change',(e) =>{
 
 
 
-//Added this button to start the game, this will set the starting score
-//as zero for both user
+
+/**
+ * If we want to reset after playing the game, we need to reset everything such as
+ * score=0, provide the user to select the player, and clear the board. 
+ */
 startBtn.addEventListener('click',(e) => {
    ticTacToe.restartTheGame(); 
    socreTieField.innerHTML= 0;
 });
 
-//This button will update the socre with the previous score and
-//clear the board
+
+
+
+/**
+ * If we want to play agian, the button will update the score with existing score, 
+ * Then clear the board, and make ready for playing second round. 
+ */
 playAgain.addEventListener('click',(e) => {
     ticTacToe.playTheGameAgain();
 });
 
 
-//Find all the users 
+
+
+
+/**
+ * Find all the users select option for user A and user B
+ * 
+ */
 const firstUser = document.querySelector('#selectUser1');
 const secondUser = document.querySelector('#selectUser2');
 
-//This button will setup A user's ball, either x or 0
+
+/** For First User, here user A
+ * This button  provide the ability to setup either cat or dog image, 
+ * It also have the ability to setup the ball as either x or o
+ */
 firstUser.addEventListener('change',(e)=>{
   
     if(firstUser.value=='x'){
@@ -556,13 +621,15 @@ firstUser.addEventListener('change',(e)=>{
         firstUser.selectedIndex=3;
         secondUser.selectedIndex=2;
     }
-
     ticTacToe.userA=firstUser.value;
     ticTacToe.userB=secondUser.value;
     
 })
 
-//This button will setup B user's ball, either x or 0
+/** For Second User, here user B
+ * This button  provide the ability to setup either cat or dog image, 
+ * It also have the ability to setup the ball as either x or o
+ */
 secondUser.addEventListener('change',(e)=>{
     if(secondUser.value=='o'){
         secondUser.selectedIndex=0;
@@ -583,14 +650,18 @@ secondUser.addEventListener('change',(e)=>{
 
 })
 
-//let soundOnOff=true;
+/**
+ * call the onOffimage element and setup some css using javascript
+ * Then add Event Listener
+ */
 const onOffImage=document.querySelector('#onOffImage');
        onOffImage.style.width='25px';
        onOffImage.style.margine='0px';
-onOffImage.addEventListener('click',(e) =>{
+ onOffImage.addEventListener('click',(e) =>{
     ticTacToe.soundOnOffController();
 
 })
+
 
 //calling the TicTacToe class to setup users
 const ticTacToe= new TicTacToe("x","y");
