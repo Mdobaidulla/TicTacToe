@@ -12,6 +12,8 @@ class TicTacToe{
         this.controlMe=false;
         this.controlAi=false;
         this.controlEasy=false;
+        this.soundOnOff=true;
+        
         //This will help to control for not clicking the button more than one
         this.check=[];
         this.addAClick=[];
@@ -38,10 +40,12 @@ class TicTacToe{
                               8,0,4,
                               6,2,4]
     }
+    
     /**
      * This method will return true for allowing to click user A
      * and change to false for allowing user B to click 
      */
+  
     playerTurn(){
         if(this.numberOfClick%2==0){
             return false;
@@ -57,28 +61,16 @@ class TicTacToe{
         if(userSelctedValue=='me'){
             this.controlMe=true;
             this.playGame();
-            console.log("selected me");
         }else if(userSelctedValue=='ai'){
             this.controlAi=true;
             this.playGameWithAi();
-            console.log(this.controlAi);
-            console.log("selected ai");
         }else if(userSelctedValue=='easy'){
             this.controlEasy=true;
             this.playGameWithAiEasyLevel();
-            console.log("Easy AI");
-            
         }else{
             this.controlEasy=false;
-           this.controlMe=false;
-           this.controlAi=false;
-           console.log("This from else");
-        //    allBox.forEach(btn =>{
-        //        btn.addEventListener('click',(e) =>{
-        //            alert("Please select user To Start")})
-        //    })
-             
-            
+            this.controlMe=false;
+            this.controlAi=false;
         }
     }
 
@@ -284,22 +276,17 @@ class TicTacToe{
                             this.findTheWinner(); 
                             this.settingPlayerTurnBoxValue("A Turn",'#000000')
                             },1000)
-                            }
-                       //this.mainAIIndexGenerator();    
+                            }  
                         } 
-                        
-                        
                     }
 
-                    })
-
-
-
-
-                }) 
-            
-    
+                })
+            }) 
      }
+     /**
+      * Adding dog in the box, this method is created, that will
+      * select the dog image and add in appropriate div. 
+      */
      createDogElement(){
         const dogImage=document.createElement("img");
         dogImage.setAttribute('src','images/dog.jpg');
@@ -308,6 +295,11 @@ class TicTacToe{
         return dogImage;
      }
 
+
+     /**
+      * Adding cat in the box, this method is created, that will
+      * select the cat image and will in appropriate div. 
+      */
      createCatElement(){
         const catImage=document.createElement("img");
             catImage.setAttribute('src','images/cat.jpeg');
@@ -318,7 +310,11 @@ class TicTacToe{
 
 
 
-     //This will generate a random number that will not be in teh check array 
+     /**
+      * This will generate a random number that will not be in the check array 
+      * There for the generated number can be used for selecting the div index that
+      *  is not already clicked. 
+      */
      generateRandomNumber(){
          let randomNumber=  Math.floor((Math.random() * 8));
          while(this.check.includes(randomNumber)){
@@ -327,11 +323,12 @@ class TicTacToe{
          return randomNumber;
      }
 
-
-//This method will generate the availabe index number by following some of the logic
-//It will check if user has already two selected index and in third selection
-//the userA is going to win, in that case this method will pick the third index to defense the 
-//userA
+    /**
+     * This method will generate the availabe index number by following some of the logic
+     * It will check if user has already two selected index and in third selection
+     * the userA is going to win, in that case this method will pick the third index to defense the 
+     * userA
+     */
      mainAIIndexGenerator(){
         let sendingValue=0;
         if(this.check.length<2){
@@ -403,22 +400,57 @@ class TicTacToe{
 
         }
     }
-    //This method will set all the index in the check array that we have used to protect each of the box from double click
+    /**
+     * This method will set all the index in the check array 
+     * that we have used to protect each of the box from double click
+     */
     stopTheGameWhenWeFoundWinner(){
         for(let i=0; i<=8; i++){
             this.check.push(i);
         }
     }
+
+
+    /**
+     * This method will take the index number for each of the box
+     * and change the color for those index number is used to show the winning
+     * row or column. 
+     * @param {*} index1 
+     * @param {*} index2 
+     * @param {*} index3 
+     */
     highlightingWinner(index1,index2,index3){
         allBox[index1].style.background='#00FF00';
-       // allBox[index1].style.border='1px solid #00FF00';
         allBox[index2].style.background='#00FF00';
-       // allBox[index2].style.border='1px solid #00FF00';
         allBox[index3].style.background='#00FF00';
-       // allBox[index3].style.border='1px solid #00FF00';
         
     }
 
+
+
+
+    /**
+     * This method will control the sound on or off situation. 
+     * By default, it will play the sound, but if user wants to mute,
+     * the can click on the speaker icone, and same icone will woke to unmute
+     */
+   soundOnOffController(){
+    
+        if(this.soundOnOff){
+            this.soundOnOff=false;
+            clickSound.muted=true;
+            draw.muted=true;
+            winner.muted=true;
+            onOffImage.setAttribute('src','images/mute.png')
+        }else{
+            
+            clickSound.muted=false;
+            draw.muted=false;
+            winner.muted=false; 
+            this.soundOnOff=true;
+            onOffImage.setAttribute('src','images/unmute.png')
+        }
+   }
 
     restartTheGame(){
         this.scoreA=0;
@@ -551,7 +583,14 @@ secondUser.addEventListener('change',(e)=>{
 
 })
 
+//let soundOnOff=true;
+const onOffImage=document.querySelector('#onOffImage');
+       onOffImage.style.width='25px';
+       onOffImage.style.margine='0px';
+onOffImage.addEventListener('click',(e) =>{
+    ticTacToe.soundOnOffController();
 
+})
 
 //calling the TicTacToe class to setup users
 const ticTacToe= new TicTacToe("x","y");

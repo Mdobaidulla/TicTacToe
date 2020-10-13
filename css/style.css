@@ -9,7 +9,7 @@ body {
     align-items: center;
 }
 header{
-    height:150px;
+    height:80px;
     background-color: #028779;
     color:#FFFFFF;
     width:100%;
@@ -51,14 +51,29 @@ footer{
 #users{
     display: flex;
     justify-content: space-between;
-    font-size:20px;
+    font-size:18px;
 }
 
 select{
-    font-size: 20px;
+    padding:3px;
+    font-size:18px;
 }
 #currentPlayer{
-    background:#000000;
+    background-color: #028779;
     color:#FFFFFF;
     padding:8px;
+}
+#controlBnt button{
+ font-size: 20px;
+ margin:0px 24px 0px 25px;
+ background-color: #028779;
+ padding:5px 10px;
+ color:#FFFFFF;
+ border:none;
+
+}
+#playerSelection{
+    width:250px;
+    padding:3px;
+    font-size:18px;
 }
