@@ -1,12 +1,12 @@
 # <center>Project#1: Tic Tac Toe </center>
- 
 ## Overview: 
-
+<hr>
 This is a web based game called <b>Tic Tac Toe</b>. This game is built using HTML, CSS, and Javascript. It has different feature setup that will allow user to play the game based on their interest level.   
 ## List of Technology
-This web based application is developed by using HTML, CSS, Javascript. 
+This web based application is developed by using HTML, CSS, Javascript. <br><br>
 
 ## User Stories
+<hr>
 * As a user, I should be able to start a new tic tac toe game
 * As a user, I should be able to click on a square to add X first and then O, and so on
 * As a user, I should be shown a message after each turn for if I win, lose, tie or who's turn it is next
@@ -14,7 +14,10 @@ This web based application is developed by using HTML, CSS, Javascript.
 * As a user, I should be shown a message when I win, lose or tie
 * As a user, I should not be able to continue playing once I win, lose, or tie
 * As a user, I should be able to play the game again without refreshing the page
+<br><br>
+
 ## Potential Extra Tic Tac Toe Features
+<hr>
  * Keep track of multiple game rounds with a win, lose and tie counter
  * Allow players to customize their tokens (X, O,dog pictuer, cat picture)
  * Involve Audio in your game
@@ -24,18 +27,39 @@ This web based application is developed by using HTML, CSS, Javascript.
  * Two level of AI for playing against user 
  * Make your site fully responsive so that it is playable from a mobile phone
 * Added animation when user win or draw by changing background color to bring the enjoyable look. 
+<br><br>
+
  ## Additional Potential Extra Tic Tac Toe Features
+ <hr>
 * It has the ability to turn on/off the sound.
 * Completely resetting the game without refreshing the page.
 * Added favicon.ico feature to display my own picture in the title bar. Where we will be able to add companies log. 
+<br><br>
+
 ## Wareframe
+<hr>
  Click <a href="https://docs.google.com/drawings/d/1smcYsMxWf0JbEK6ZU2w4Gp5cHjETjmAsD5_-7CBTE_k/edit">here</a>
   to find the wareframe that I have drew in google draw. 
   ![Wareframe Image](images/ware_frame.png)
   
   Image 1: Wareframe<br>
-  
-## List of Feature
+<br><br>
+
+## How Did I Solve The Winner
+<hr>
+There are four different arrays that I have managed in this app. One array I manage for keeping all the clicked index, second array I use to keep all the clicked index by user A, and the third array I use to keep all the clicked by userB. I also have another array for keeping all the different combination of idex for winning.<br>
+Then I run nested for loop to find the winner, or draw if there is no winning index for either user A or user B, and the number of clicked is equal to the number of available boxes.  
+<br><br>
+
+## My Favorite Function
+<hr>
+ I feel proud myself when I was able to solve medium level AI part. I try to find the specific index that will be the last click for the user to win the game and make that index ready to click by AI. That reduce the winning chance for user A. 
+ <br>If the AI has two index clicked and the third clicked will make the user winner, then the AI will select that index to win. On the other hand, if AI found ther is no winning chance on the current click, then it looks for the user A index to see if there is any combination of index  that is already clicked by the other user, and the next click will make other user winner. Then AI will click on that index to prevent the other user from winning. 
+<br><br>
+ 
+## List of Available Feature
+<hr>
+
 ### Select Different Level
  This game have the feature to play different level of the game, such as <b>Play Yourself</b>, <b>Level Easy</b>, and <b>Level Medium</b>. First level of the game is called <b>Play Yourself</b>, which will allow you to play the game as a user A and user B. The <b>Level Easy</b> has <b>AI</b> setup ready to play against you, the AI has the intelegent setup where it will play everytime you have completed your round. The third leve of the game is called <b>Level Medium</b> This level also has <b>AI</b> setup ready to paly against you, but here the AI is more intelegent compare to <b>Level Easy</b>. 
  ### Auido
@@ -53,7 +77,9 @@ Play Again is a button that will allow user to start next round of the game. Thi
 ### Reset
 This Reset button is very powerfull, it will allow user to reset everyting to the starting point without refreshing the page. 
 
+
 ### UI Screen On Desktop
+
 ![Wareframe Image](images/desktop.png)
 
 ### Iphone 6/7/8 Plus Screen On Desktop
