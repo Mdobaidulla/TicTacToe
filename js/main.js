@@ -11,6 +11,7 @@ class TicTacToe{
         this.scoreT=0;
         this.controlMe=false;
         this.controlAi=false;
+        this.controlEasy=false;
         //This will help to control for not clicking the button more than one
         this.check=[];
         this.addAClick=[];
@@ -62,7 +63,13 @@ class TicTacToe{
             this.playGameWithAi();
             console.log(this.controlAi);
             console.log("selected ai");
+        }else if(userSelctedValue=='easy'){
+            this.controlEasy=true;
+            this.playGameWithAiEasyLevel();
+            console.log("Easy AI");
+            
         }else{
+            this.controlEasy=false;
            this.controlMe=false;
            this.controlAi=false;
            console.log("This from else");
@@ -79,7 +86,13 @@ class TicTacToe{
 
 
 
-
+/**
+ * This method is for controlling the game with same user
+ * user A and user B will be able to play the game, 
+ * Note: future thinking is to connect this both users in database using their 
+ * email address as unique identifier, then two users will be able to play 
+ * from different divices
+ */
 
     playGame(){
       
@@ -141,6 +154,80 @@ class TicTacToe{
 
     
      }
+/**
+ * This method will control userB by generating random number 
+ * That random number will be use for each of the squire button index 
+ * number, based on the index number userB will play.
+ */
+
+     playGameWithAiEasyLevel(){
+        
+        allBox.forEach((boxButton, index) =>{
+                boxButton.addEventListener('click',(e)=>{
+                    //This if else will control if the user change the player, or reset it, then they need to set the player again.
+                    if(this.controlEasy){
+                        if(this.check.includes(index)){
+                        }else{  
+                            clickSound.play();
+                            if(this.userA=='x'){
+                                boxButton.innerHTML='&#x2715;';
+                                boxButton.style.color='#B8B8B8';
+                            }else if(this.userA=='o'){
+                                boxButton.innerHTML='&#79;';
+                                boxButton.style.color='#FFFFFF';  
+                            }else if(this.userA=='cat'){
+                                boxButton.appendChild(this.createCatElement());
+                            }else if(this.userA='dog'){
+                                boxButton.appendChild(this.createDogElement());
+                            }
+                            this.check.push(index);
+                            this.addAClick.push(index);
+                            this.findTheWinner(); 
+                        
+
+                            if(this.check.length<9){
+                                 this.settingPlayerTurnBoxValue("B Turn",'#827b79');
+                            allBox.forEach(b=>{
+                                 b.disabled = true;
+                            })
+                            setTimeout(()=>{
+                            clickSound.play();
+                            //let aiIndex=this.mainAIIndexGenerator();
+                            let aiIndex=this.generateRandomNumber();
+                            if(this.userB=='o'){
+                            allBox[aiIndex].innerHTML='&#79;';
+                            allBox[aiIndex].style.color='#FFFFFF';
+                            }else if(this.userB=='x'){
+                            allBox[aiIndex].innerHTML='&#x2715;';
+                            allBox[aiIndex].style.color='#B8B8B8';  
+                            }else if(this.userB=='cat'){
+                                allBox[aiIndex].appendChild(this.createCatElement());
+                            }else if(this.userB='dog'){
+                                 allBox[aiIndex].appendChild(this.createDogElement());
+                            }
+                            this.check.push(aiIndex);
+                            this.addBClick.push(aiIndex);
+                            this.findTheWinner(); 
+                            this.settingPlayerTurnBoxValue("A Turn",'#000000')
+                            },1000)
+                            }   
+                        } 
+                        
+                        
+                    }
+
+                    })
+
+
+
+
+                })    
+    
+     }
+
+
+
+
 //This method will has all the button, when one button will be click, it has two steps to 
 //complete the action, first it will work on the button has been click, then it will wait 
 //a certain time, and complete the next click based on the avialbe index nubmber that has
@@ -241,7 +328,10 @@ class TicTacToe{
      }
 
 
-//Working on this method to find the best index. for unbitable logic
+//This method will generate the availabe index number by following some of the logic
+//It will check if user has already two selected index and in third selection
+//the userA is going to win, in that case this method will pick the third index to defense the 
+//userA
      mainAIIndexGenerator(){
         let sendingValue=0;
         if(this.check.length<2){
@@ -251,20 +341,15 @@ class TicTacToe{
             let a=posible[0];
             let b=posible[1];
             if((this.addBClick.includes(a)&&this.addBClick.includes(b))&&(!this.check.includes(this.replaceingIndex[index]))){
-                //if(!this.check.includes(this.replaceingIndex[index])){
                     sendingValue= this.replaceingIndex[index];
-                 // }
             }
             else if((this.addAClick.includes(a)&&this.addAClick.includes(b))&&(!this.check.includes(this.replaceingIndex[index]))){
-                //if(!this.check.includes(this.replaceingIndex[index])){
                   sendingValue= this.replaceingIndex[index];
-                //}
             }
         })
        }
        if(this.check.includes(sendingValue)){
            sendingValue=this.generateRandomNumber();
-           console.log('last If block',sendingValue);
        }
       
      return sendingValue;
