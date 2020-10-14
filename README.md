@@ -7,6 +7,7 @@ This web based application is developed by using HTML, CSS, Javascript. <br><br>
 
 ## User Stories
 <hr>
+
 * As a user, I should be able to start a new tic tac toe game
 * As a user, I should be able to click on a square to add X first and then O, and so on
 * As a user, I should be shown a message after each turn for if I win, lose, tie or who's turn it is next
@@ -18,6 +19,7 @@ This web based application is developed by using HTML, CSS, Javascript. <br><br>
 
 ## Potential Extra Tic Tac Toe Features
 <hr>
+
  * Keep track of multiple game rounds with a win, lose and tie counter
  * Allow players to customize their tokens (X, O,dog pictuer, cat picture)
  * Involve Audio in your game
@@ -31,6 +33,7 @@ This web based application is developed by using HTML, CSS, Javascript. <br><br>
 
  ## Additional Potential Extra Tic Tac Toe Features
  <hr>
+ 
 * It has the ability to turn on/off the sound.
 * Completely resetting the game without refreshing the page.
 * Added favicon.ico feature to display my own picture in the title bar. Where we will be able to add companies log. 
@@ -40,6 +43,7 @@ This web based application is developed by using HTML, CSS, Javascript. <br><br>
 <hr>
  Click <a href="https://docs.google.com/drawings/d/1smcYsMxWf0JbEK6ZU2w4Gp5cHjETjmAsD5_-7CBTE_k/edit">here</a>
   to find the wareframe that I have drew in google draw. 
+
   ![Wareframe Image](images/ware_frame.png)
   
   Image 1: Wareframe<br>
